@@ -1,0 +1,63 @@
+.main{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  .sidebar-menu-con{
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 21;
+    // transition: width .3s;
+    background: rgb(73, 80, 96);
+  }
+  .layout-text{
+    // display: inline-block;
+    // white-space: nowrap;
+    // position: absolute;
+  }
+  &-header-con{
+    box-sizing: border-box;
+    position: fixed;
+    display: block;
+    padding-left: 200px;
+    width: 100%;
+    height: 100px;
+    z-index: 20;
+    .tags-con{
+      height: 40px;
+      z-index: -1;
+      background: #f0f0f0;
+    }
+  }
+  &-header{
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
+    .navicon-con{
+      margin: 8px;
+      display: inline-block;
+    }
+  }
+  .single-page-con{
+    position: absolute;
+    top: 100px;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: #f0f0f0;
+    z-index: 1;
+    transition: left .3s;
+    .single-page{
+      margin: 10px;
+    }
+  }
+  .logo-con{
+    padding: 8px;
+    text-align: center;
+    img{
+      height: 44px;
+      width: auto;
+    }
+  }
+}
