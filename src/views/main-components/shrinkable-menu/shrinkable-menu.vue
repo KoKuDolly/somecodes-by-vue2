@@ -5,6 +5,7 @@
       v-show="!shrink"
       :menu-list="menuList"
       @on-change="handleChange"
+      :open-names="openNames"
     />
     <sidebar-menu-shrink
       v-show="shrink"
@@ -35,7 +36,8 @@ export default {
       type: Array,
       required: true
     },
-    beforePush: Function
+    beforePush: Function,
+    openNames: Array
   },
   computed: {
     bgColor () {

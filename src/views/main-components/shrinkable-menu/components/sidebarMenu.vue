@@ -1,5 +1,5 @@
 <template>
-  <Menu :theme="theme2" active-name="1-2" :open-names="['1']" accordion @on-select="changeMenu" width="auto">
+  <Menu ref="sideMenu" :theme="theme2" :active-name="$route.name" :open-names="openNames" accordion @on-select="changeMenu" width="auto">
     <template v-for="item in menuList">
       <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="'menuitem'+ item.name">
         <Icon :type="item.children[0].icon||item.icon" :key="'menuicon'+item.name" />
@@ -28,7 +28,16 @@ export default {
       type: Array,
       required: true
     },
-    iconSize: Number
+    iconSize: Number,
+    openNames: Array
+  },
+  updated () {
+    this.$nextTick(() => {
+      if (this.$refs.sideMenu) {
+        this.$refs.sideMenu.updateOpened()
+        this.$refs.sideMenu.updateActiveName()
+      }
+    })
   },
   data () {
     return {

@@ -14,11 +14,7 @@ export const otherRouter = {
   redirect: '/home',
   component: Main,
   children: [
-    {
-      path: 'home',
-      name: 'home',
-      component: () => import('@/views/home/home.vue')
-    }
+    {path: 'home', title: '主页', name: 'home_index', component: () => import('@/views/home/home.vue')}
   ]
 }
 

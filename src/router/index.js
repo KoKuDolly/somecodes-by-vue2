@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
     next({name: 'login'})
   } else if (Cookies.get('user') && to.name === 'login') {
     Util.title()
-    next({name: 'home_index'})
+    next({name: 'home'})
   } else {
     Util.toDefaultPage([...routers], to.name, router, next)
   }
