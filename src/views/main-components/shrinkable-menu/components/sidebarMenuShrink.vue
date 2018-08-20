@@ -2,16 +2,6 @@
 
 </style>
 <template>
-  <!-- <div style="text-align:center;">
-    <Dropdown transfer placement="right">
-      <Button type="text" style="width:70px;padding:10px 0;margin-left:-5px;background:transparent;">
-        <Icon size="20" :color="iconColor" type="ios-basket"/>
-      </Button>
-      <DropdownMenu slot="list" style="width:200px;">
-        <DropdownItem>1</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  </div> -->
   <div>
     <template v-for="(item, index) in menuList">
       <div style="text-align:center;" :key="index">

@@ -8,13 +8,21 @@ export const loginRouter = {
   },
   component: () => import('@/views/login.vue')
 }
+
+export const locking = {
+  path: '/locking',
+  name: 'locking',
+  component: () => import('@/views/main-components/lock-screen/components/locking-page.vue')
+}
+
 export const otherRouter = {
   path: '/',
   name: 'otherRouter',
   redirect: '/home',
   component: Main,
   children: [
-    {path: 'home', title: '主页', name: 'home_index', component: () => import('@/views/home/home.vue')}
+    {path: 'home', title: '首页', name: 'home_index', component: () => import('@/views/home/home.vue')},
+    {path: 'ownspace', title: '个人中心', name: 'ownspace_index', component: () => import('@/views/own-space/')}
   ]
 }
 
@@ -35,5 +43,6 @@ export const appRouter = [
 export const routers = [
   loginRouter,
   otherRouter,
-  ...appRouter
+  ...appRouter,
+  locking
 ]
