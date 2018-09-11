@@ -18,13 +18,22 @@ router.beforeEach((to, from, next) => {
   // console.log(routers)
   iView.LoadingBar.start()
   Util.title(to.meta.title)
-  if (!Cookies.get('user') && to.name !== 'login') {
-    next({name: 'login'})
-  } else if (Cookies.get('user') && to.name === 'login') {
-    Util.title()
-    next({name: 'home'})
+  if (Cookies.get('locking') === '1' && to.name !== 'locking') {
+    next({
+      replace: true,
+      name: 'locking'
+    })
+  } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
+    next(false)
   } else {
-    Util.toDefaultPage([...routers], to.name, router, next)
+    if (!Cookies.get('user') && to.name !== 'login') {
+      next({name: 'login'})
+    } else if (Cookies.get('user') && to.name === 'login') {
+      Util.title()
+      next({name: 'home'})
+    } else {
+      Util.toDefaultPage([...routers], to.name, router, next)
+    }
   }
 })
 

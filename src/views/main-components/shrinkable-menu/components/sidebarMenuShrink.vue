@@ -5,7 +5,7 @@
   <div>
     <template v-for="(item, index) in menuList">
       <div style="text-align:center;" :key="index">
-        <Dropdown transfer placement="right" v-if="item.children.length!==1">
+        <Dropdown transfer placement="right-start" v-if="item.children.length!==1">
           <Button type="text" style="width:70px;padding:10px 0;margin-left:-5px;background:transparent;">
             <Icon size="20" :color="iconColor" :type="item.icon"/>
           </Button>
@@ -16,6 +16,17 @@
                 <span>{{itemTitle(child)}}</span>
               </DropdownItem>
             </template>
+          </DropdownMenu>
+        </Dropdown>
+        <Dropdown transfer v-else placement="right-start">
+          <Button type="text" style="width:70px;padding:10px 0;margin-left:-5px;background:transparent;">
+            <Icon size="20" :color="iconColor" :type="item.children[0].icon || item.icon"/>
+          </Button>
+          <DropdownMenu style="width: 200px;" slot="list">
+            <DropdownItem :name="item.children[0].name" :key="'d' + index">
+              <Icon :type="item.children[0].icon || item.icon" />
+              <span style="padding-left: 10px;">{{itemTitle(item.children[0])}}</span>
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>

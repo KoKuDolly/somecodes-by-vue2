@@ -37,6 +37,38 @@ export const appRouter = [
       {path: 'G2', icon: 'logo-googleplus', title: 'G2', name: 'G2', component: () => import('@/views/AntV/G2/')},
       {path: 'G6', icon: 'logo-googleplus', title: 'G6', name: 'G6', component: () => import('@/views/AntV/G6/')}
     ]
+  },
+  {
+    path: '/Rule',
+    name: 'Rule',
+    title: 'Rule',
+    icon: 'logo-buffer',
+    redirect: '/Rule/Rules',
+    component: Main,
+    children: [
+      {
+        path: 'Rules',
+        icon: 'logo-googleplus',
+        title: 'Rules',
+        redirect: '/Rule/Rules/Rules_index',
+        name: 'Rules_home',
+        component: () => import('@/views/Rule/index.vue'),
+        children: [
+          {
+            path: 'Rules_index',
+            title: 'Rules_index',
+            name: 'Rules_home',
+            component: () => import('@/views/Rule/components/index.vue')
+          },
+          {
+            path: 'variaries_add',
+            title: 'variaries_add',
+            name: 'variaries_add',
+            component: () => import('@/views/Rule/components/Create/index.vue')
+          }
+        ]
+      }
+    ]
   }
 ]
 

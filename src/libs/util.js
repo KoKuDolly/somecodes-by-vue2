@@ -73,7 +73,7 @@ util.handleTitle = function (vm, item) {
     return item.title
   }
 }
-
+// 这个方法有待递归扩展,针对多层路由的面包屑
 util.setCurrentPath = function (vm, name) {
   let title = ''
   let isOtherRouter = false
@@ -83,6 +83,19 @@ util.setCurrentPath = function (vm, name) {
         title = util.handleTitle(vm, item)
         if (item.name === 'otherRouter') {
           isOtherRouter = true
+        }
+      } else {
+        console.log(item, name)
+        if (item.children[0].children.length === 1) {
+
+        } else {
+          item.children[0].children.forEach(child => {
+            console.log(child)
+            if (child.name === name) {
+              title = util.handleTitle(vm, child)
+              console.log(title)
+            }
+          })
         }
       }
     } else {
@@ -118,7 +131,24 @@ util.setCurrentPath = function (vm, name) {
   } else {
     let currentPathObj = vm.$store.state.app.routers.filter(item => {
       if (item.children.length <= 1) {
-        return item.children[0].name === name
+        if (item.children[0].name === name) {
+          return item.children[0].name === name
+        } else {
+          if (item.children[0].children.length <= 1) {
+            
+          } else {
+            let i = 0
+            let childArr = item.children[0].children
+            let len = childArr.length
+            while (i < len) {
+              if (childArr[i].name === name) {
+                return true
+              }
+              i++
+            }
+            return false
+          }
+        }
       } else {
         let i = 0
         let childArr = item.children
@@ -132,6 +162,7 @@ util.setCurrentPath = function (vm, name) {
         return false
       }
     })[0]
+    console.log(currentPathObj)
     if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
       currentPathArr = [{
         title: '首页',
@@ -139,17 +170,39 @@ util.setCurrentPath = function (vm, name) {
         name: 'home_index'
       }]
     } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
-      currentPathArr = [{
-          title: '首页',
-          path: '/home',
-          name: 'home_index'
-        },
-        {
-          title: currentPathObj.title,
-          path: '',
-          name: name
-        }
-      ]
+      if (currentPathObj.children[0].children.length > 1) {
+        let childObj = currentPathObj.children[0].children.filter(child => {
+          return child.name === name
+        })[0]
+        currentPathArr = [{
+            title: '首页',
+            path: '/home',
+            name: 'home_index'
+          },
+          {
+            title: currentPathObj.title,
+            path: '',
+            name: currentPathObj.name
+          },
+          {
+            title: childObj.title,
+            path: currentPathObj.path + '/' + childObj.path,
+            name: name
+          }
+        ]
+      } else {
+        currentPathArr = [{
+            title: '首页',
+            path: '/home',
+            name: 'home_index'
+          },
+          {
+            title: currentPathObj.title,
+            path: '',
+            name: name
+          }
+        ]
+      }      
     } else {
       let childObj = currentPathObj.children.filter((child) => {
         return child.name === name

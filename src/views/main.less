@@ -12,6 +12,14 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  .unlock-con{
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 11000;
+  }
   .sidebar-menu-con{
     height: 100%;
     position: fixed;
@@ -122,6 +130,7 @@
     transition: left .3s;
     .single-page{
       margin: 10px;
+      min-height: 400px;
     }
   }
   .logo-con{
@@ -131,5 +140,13 @@
       height: 44px;
       width: auto;
     }
+  }
+}
+.logo-con{
+  padding: 8px;
+  text-align: center;
+  img{
+    height: 44px;
+    width: auto;
   }
 }
