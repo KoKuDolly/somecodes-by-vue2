@@ -5,36 +5,44 @@ export const ruleVariaColumns = [
   },
   {
     title: '规则变量中文名称',
-    key: 'variaNameCn'
+    key: 'variaNameCn',
+    minWidth: 200
   },
   {
     title: '规则变量英文名称',
     sortable: true,
-    key: 'variaNameEn'
+    key: 'variaNameEn',
+    minWidth: 200
   },
   {
     title: '数据源',
-    key: 'dataSource'
+    key: 'dataSource',
+    minWidth: 120
   },
   {
     title: '依赖产品中文名称',
-    key: 'relateNameCn'
+    key: 'relateNameCn',
+    minWidth: 200
   },
   {
     title: '依赖产品英文名称  版本号',
-    key: 'relateNameEnVersion'
+    key: 'relateNameEnVersion',
+    minWidth: 200
   },
   {
     title: '变量状态',
-    key: 'variariesStatus'
+    key: 'variariesStatus',
+    minWidth: 120
   },
   {
     title: '引用次数',
     key: 'quoteNum',
-    sortable: true
+    sortable: true,
+    minWidth: 120
   },
   {
-    title: '操作'
+    title: '操作',
+    minWidth: 200
   }
 ]
 

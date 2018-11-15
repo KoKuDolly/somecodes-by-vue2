@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div class="list-header clearfix">
-      <div class="right header-edit">
-        <!-- <Button :color="'blue'" icon="ios-create" style="color: green;">新建</Button>
-        <Button color="blue" icon="md-cloud-upload" style="color: green;">批量上传</Button> -->
-        <Button @click="() => this.$router.push({name: 'variaries_add'})">
-          <Icon type="ios-create" :size="16" color="green"/>
-          新建
-        </Button>
-        <Button v-if="id !== 'ruleset'">
-          <Icon type="md-cloud-upload" :size="16" color="green" />
-          批量上传
-        </Button>
+    <div class="list-header">
+      <div class="clearfix">
+        <div class="right header-edit">
+          <!-- <Button :color="'blue'" icon="ios-create" style="color: green;">新建</Button>
+          <Button color="blue" icon="md-cloud-upload" style="color: green;">批量上传</Button> -->
+          <Button @click="() => this.$router.push({name: 'variaries_add'})">
+            <Icon type="ios-create" :size="16" color="green"/>
+            新建
+          </Button>
+          <Button v-if="id !== 'ruleset'">
+            <Icon type="md-cloud-upload" :size="16" color="green" />
+            批量上传
+          </Button>
+        </div>
       </div>
       <div class="header-form">
         <Form :label-width="100" inline>
