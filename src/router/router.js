@@ -35,7 +35,30 @@ export const appRouter = [
     component: Main,
     children: [
       {path: 'G2', icon: 'logo-googleplus', title: 'G2', name: 'G2', component: () => import('@/views/AntV/G2/')},
-      {path: 'G6', icon: 'logo-googleplus', title: 'G6', name: 'G6', component: () => import('@/views/AntV/G6/')}
+      {path: 'G6', icon: 'logo-googleplus', title: 'G6', name: 'G6', component: () => import('@/views/AntV/G6/')},
+      {path: 'canvas', icon: 'logo-googleplus', title: 'canvas', name: 'canvas', component: () => import('@/views/Canvas/')},
+      {path: 'eslint', icon: 'logo-googleplus', title: 'eslint', name: 'eslint', component: () => import('@/views/Eslint/')}
+    ]
+  },
+  {
+    path: '/multipleView',
+    name: 'multipleView',
+    title: 'multipleView',
+    icon: 'logo-buffer',
+    component: Main,
+    children: [
+      {
+        path: 'more',
+        icon: 'logo-googleplus',
+        title: 'multipleView_more',
+        name: 'multipleView_more',
+        components: {
+          default: () => import('@/views/multipleView/components/a.vue'),
+          b: () => import('@/views/multipleView/components/a.vue'),
+          c: () => import('@/views/multipleView/components/c.vue')
+        },
+        children: []
+      }
     ]
   },
   {

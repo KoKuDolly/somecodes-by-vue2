@@ -85,15 +85,15 @@ util.setCurrentPath = function (vm, name) {
           isOtherRouter = true
         }
       } else {
-        console.log(item, name)
+        // console.log(item, name)
         if (item.children[0].children.length === 1) {
 
         } else {
           item.children[0].children.forEach(child => {
-            console.log(child)
+            // console.log(child)
             if (child.name === name) {
               title = util.handleTitle(vm, child)
-              console.log(title)
+              // console.log(title)
             }
           })
         }
@@ -162,7 +162,7 @@ util.setCurrentPath = function (vm, name) {
         return false
       }
     })[0]
-    console.log(currentPathObj)
+    // console.log(currentPathObj)
     if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
       currentPathArr = [{
         title: '首页',

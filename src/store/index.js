@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import app from './modules/app'
 import user from './modules/user'
+import rules from './modules/rules'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ const store = new Vuex.Store({
   actions: {},
   modules: {
     app,
-    user
+    user,
+    rules
   }
 })
 

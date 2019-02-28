@@ -52,9 +52,12 @@
     </div>
     <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
       <div class="single-page">
-        <keep-alive>
+        <!-- keep-alive 会影响命名视图，为什么？ -->
+        <!-- <keep-alive> -->
           <router-view></router-view>
-        </keep-alive>
+          <router-view name='b'></router-view>
+          <router-view name='c'></router-view>
+        <!-- </keep-alive> -->
       </div>
     </div>
   </div>
