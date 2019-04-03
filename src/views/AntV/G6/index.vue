@@ -1,9 +1,21 @@
 <template>
   <div>
-    G6
+    <Form :v-model="formOneData">
+      <FormItem>
+        <Select filterable v-model="formOneData.selectOneValue" style="width: 300px;" @on-change="handleOneChange">
+          <Option v-for="(item, index) in list" :key="index" :value="item.code" :label="item.name"></Option>
+        </Select>
+      </FormItem>
+    </Form>
+    <Form :v-model="formTwoData">
+      <Select filterable v-model="formTwoData.selectTwoValue" style="width: 300px;" @on-change="handleTwoChange">
+        <Option v-for="(item, index) in list" :key="index" :value="item.code" :label="item.name"></Option>
+      </Select>
+    </Form>
   </div>
 </template>
 <script>
+// filterable 属性 会导致两个关联 select 组件之间 的 值的控制
 export default {
   name: '',
   components: {},
@@ -11,12 +23,45 @@ export default {
   computed: {},
   watch: {},
   mounted () {
-    this.init()
+    // this.init()
   },
   data () {
-    return {}
+    return {
+      formOneData: {
+        selectOneValue: ''
+      },
+      formTwoData: {
+        selectTwoValue: ''
+      },
+      list: [
+        {
+          name: '00',
+          code: '00'
+        },
+        {
+          name: '01',
+          code: '01'
+        },
+        {
+          name: '02',
+          code: '02'
+        },
+        {
+          name: '03',
+          code: '03'
+        }
+      ]
+    }
   },
   methods: {
+    handleOneChange () {
+      console.log(this.formOneData.selectOneValue)
+      this.formTwoData.selectTwoValue = this.formOneData.selectOneValue
+    },
+    handleTwoChange () {
+      console.log(this.formTwoData.selectTwoValue)
+      this.formOneData.selectOneValue = this.formTwoData.selectTwoValue
+    },
     init () {
       // 1.
       // const p1 = new Promise(function (resolve, reject) {
