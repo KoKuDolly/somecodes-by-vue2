@@ -48,7 +48,34 @@ export default {
       this.renderTable()
     },
     renderTable () {
-      console.log(data, map)
+      function generateTableData (data = []) {
+        return data.map((v, i, a) => {
+          const keys = Object.keys(v)
+          const extendArr = keys.map((vv, vi, va) => {
+            if (v[vv] instanceof Object) {
+              return {...v[vv]}
+            }
+          })
+          let obj = {}
+          extendArr.forEach(v => {
+            obj = {...obj, ...v}
+          })
+
+          let result = {...v, ...obj}
+          return result
+        })
+      }
+
+      this.tableData = generateTableData(data.data.records)
+      // console.log(this.columns)
+      const arr = this.columns.map(v => v.key).map(v => {
+        return {[v]: v}
+      })
+      let obj = {}
+      arr.forEach(v => {
+        obj = {...obj, ...v}
+      })
+      this.tableData = [obj].concat(this.tableData)
     },
     handleColumns () {
       function generateMap (data = {}, map = {}) {
@@ -87,7 +114,6 @@ export default {
       generateMap(data.data.records[0], map)
 
       this.columns = generateColumns(map)
-      console.log(map, this.columns)
     }
   }
 }
