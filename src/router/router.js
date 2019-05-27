@@ -41,6 +41,23 @@ export const appRouter = [
     ]
   },
   {
+    path: '/element-components',
+    name: 'element-components',
+    title: 'elements',
+    icon: 'logo-buffer',
+    component: Main,
+    children: [
+      {
+        path: 'table',
+        icon: 'logo-googleplus',
+        title: 'elements-table',
+        name: 'elementsTable',
+        component: () => import('@/views/element-table/index'),
+        children: []
+      }
+    ]
+  },
+  {
     path: '/multipleView',
     name: 'multipleView',
     title: 'multipleView',
