@@ -137,6 +137,7 @@ export default {
       generateMap(data.data.records[0], map)
 
       this.columns = generateColumns(map)
+      console.log(this.columns, map)
     }
   }
 }
