@@ -140,7 +140,7 @@ export const map = {
   swiftNumber: '流水号',
   uniformity: 'uniformity',
   uniformityResultJson: {
-    chName: 'uniformity结果Json',
+    cnName: 'uniformity结果Json',
     children: {}
   },
   updateTime: '更新时间',

@@ -67,10 +67,38 @@ export default {
       }
 
       this.tableData = generateTableData(data.data.records)
-      // console.log(this.columns)
-      const arr = this.columns.map(v => v.key).map(v => {
-        return {[v]: v}
-      })
+      // 从多层对象中，选择对应键，组成新数组，多层对象的子属性必须是children
+      function mapToFlat (obj = {}) {
+        return obj.data.map((v, i, a) => {
+          if (v[obj.children]) {
+            return mapToFlat({
+              data: v[obj.children],
+              children: 'children',
+              key: 'key'
+            })
+          } else {
+            return v[obj.key]
+          }
+        })
+      }
+      // 将多维数组打平成一维数组
+      function flatArr (arr) {
+        return arr.reduce(function (pre, cur) {
+          if (!Array.isArray(cur)) {
+            return [...pre, cur]
+          } else {
+            return [...pre, ...flatArr(cur)]
+          }
+        }, [])
+      }
+
+      let flatColoumns = flatArr(mapToFlat({
+        data: this.columns,
+        children: 'children',
+        key: 'key'
+      }))
+
+      let arr = flatColoumns.map(v => ({[v]: v}))
       let obj = {}
       arr.forEach(v => {
         obj = {...obj, ...v}
@@ -84,7 +112,7 @@ export default {
           const value = data[v]
           if (value instanceof Object) {
             let obj = {}
-            Object.keys(value).forEach((v, i, a) => {
+            Object.keys(value).sort().forEach((v, i, a) => {
               obj[v] = '变量' + (i + 1)
             })
             map[v].children = obj
