@@ -4,22 +4,24 @@
     <div class="element-body">
       <Table
         :data="tableData"
+        row-key="id"
+        @expand-change="toggleRowExpansion"
       >
         <TableColumn
           type="expand"
         >
-          <template slot-scope="props">
-            <Form label-position="left">
-              <template v-for="(item, index) in Object.keys(props.row.children)">
-                <FormItem :key="index">
-                  <span class="expand-title">{{'变量' + (index + 1) + '英文名：'}}</span><span>{{item}}</span>
-                  <span class="expand-title">线上：</span><span>{{props.row.children[item].on ? props.row.children[item].on : '无结果'}}</span>
-                  <span class="expand-title">线下：</span><span>{{props.row.children[item].off ? props.row.children[item].off : '无结果'}}</span>
-                  <span class="expand-title">一致性对比：</span><span>{{props.row.children[item].uniformity ? props.row.children[item].uniformity : '无结果'}}</span>
-                </FormItem>
-              </template>
-            </Form>
-          </template>
+          <Table
+            :data="variableTableData"
+          >
+            <template v-for="(item, index) in variableColumns">
+              <TableColumn
+                :key="index"
+                :prop="item.key"
+                :label="item.label"
+              >
+              </TableColumn>
+            </template>
+          </Table>
         </TableColumn>
         <template v-for="(item, index) in columns">
           <TableColumn
@@ -55,34 +57,29 @@ function generateArr ({data = {}}) {
   return arr.sort()
 }
 
-function generateObj (data, variableArr) {
-  let arr = []
+function generateObj (data) {
+  let result = []
   data.forEach(v => {
-    let obj = {}
-    variableArr.forEach(_key => {
-      obj[_key] = { on: '', off: '', uniformity: '' }
-    })
+    let arr = []
     Object.keys(v).forEach(key => {
       if (key === 'offResultJson') {
-        variableArr.forEach(_key => {
-          obj[_key].off = v[key][_key]
-        })
+        arr[0] = v[key]
+        arr[0] = Object.assign({name: '线下'}, arr[0], {id: 0})
       }
       if (key === 'onResultJson') {
-        variableArr.forEach(_key => {
-          obj[_key].on = v[key][_key]
-        })
+        arr[1] = v[key]
+        arr[1] = Object.assign({name: '线上'}, arr[1], {id: 1})
       }
       if (key === 'uniformityResultJson') {
-        variableArr.forEach(_key => {
-          obj[_key].uniformity = v[key][_key]
-        })
+        arr[2] = v[key]
+        arr[2] = Object.assign({name: '一致性对比'}, arr[2], {id: 2})
       }
     })
-    obj = {children: {...obj}, ...v}
-    arr.push(obj)
+    // console.log(arr)
+    result.push(arr)
+    v.sub = arr
   })
-  return arr
+  return result
 }
 
 export default {
@@ -144,21 +141,22 @@ export default {
       }
 
       this.columns = generateColumns(map)
-      this.variableColumns = generateColumns(obj)
-      console.log(this.columns, this.variableColumns)
+      this.variableColumns = [{
+        key: 'name',
+        label: '类型'
+      }].concat(generateColumns(obj))
     },
     renderTable () {
-      // this.tableData = data.data.records
-      const variableArr = generateArr({data: data.data.records[0]})
-      // this.variableTableData = generateObj(data.data.records, variableArr)
-      this.tableData = generateObj(data.data.records, variableArr)
+      generateObj(data.data.records)
+      this.tableData = data.data.records
+    },
+    toggleRowExpansion (row, expandedRows) {
+      console.log(row, expandedRows)
+      this.variableTableData = row.sub
     }
   }
 }
 </script>
 <style lang="less">
   /* comments */
-  .expand-title {
-    font-weight: bold;
-  }
 </style>

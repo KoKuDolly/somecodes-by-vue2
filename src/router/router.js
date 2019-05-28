@@ -62,6 +62,14 @@ export const appRouter = [
         name: 'elementsTableAnother',
         component: () => import('@/views/element-table/element-table'),
         children: []
+      },
+      {
+        path: 'table-three',
+        icon: 'logo-googleplus',
+        title: 'elements-table-three',
+        name: 'elementsTableThree',
+        component: () => import('@/views/element-table/table-three'),
+        children: []
       }
     ]
   },

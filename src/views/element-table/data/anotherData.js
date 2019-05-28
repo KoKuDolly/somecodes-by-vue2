@@ -64,7 +64,7 @@ export const data = {
         cusId: '411524199401108028',
         cusName: '刘静',
         cusNum: '1211',
-        id: '138',
+        id: '139',
         modelName: 'scorecashoffmsyd',
         modelVersion: 'S1_0',
         offResultJson: {
