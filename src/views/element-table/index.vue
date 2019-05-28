@@ -48,6 +48,7 @@ export default {
       this.renderTable()
     },
     renderTable () {
+      // 将 offResultJson，onResultJson，uniformityResultJson 中的属性扩散到一层级中，但是这三个属性的值没有删除
       function generateTableData (data = []) {
         return data.map((v, i, a) => {
           const keys = Object.keys(v)
@@ -67,17 +68,15 @@ export default {
       }
 
       this.tableData = generateTableData(data.data.records)
-      // 从多层对象中，选择对应键，组成新数组，多层对象的子属性必须是children
-      function mapToFlat (obj = {}) {
-        return obj.data.map((v, i, a) => {
-          if (v[obj.children]) {
+      // 从多层对象中，选择对应键 key，组成新数组，多层对象的子属性必须是children
+      function mapToFlat ({ data = {}, children = 'children', key = 'key' }) {
+        return data.map((v, i, a) => {
+          if (v[children]) {
             return mapToFlat({
-              data: v[obj.children],
-              children: 'children',
-              key: 'key'
+              data: v[children]
             })
           } else {
-            return v[obj.key]
+            return v[key]
           }
         })
       }
@@ -92,11 +91,7 @@ export default {
         }, [])
       }
 
-      let flatColoumns = flatArr(mapToFlat({
-        data: this.columns,
-        children: 'children',
-        key: 'key'
-      }))
+      let flatColoumns = flatArr(mapToFlat({ data: this.columns }))
 
       let arr = flatColoumns.map(v => ({[v]: v}))
       let obj = {}
