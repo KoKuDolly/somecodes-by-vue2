@@ -154,6 +154,7 @@ export default {
     renderTable () {
       generateObj(data.data.records)
       this.tableData = data.data.records
+      console.log(this.tableData)
     },
     toggleRowExpansion (row, expandedRows) {
       if (expandedRows.length > 1) {

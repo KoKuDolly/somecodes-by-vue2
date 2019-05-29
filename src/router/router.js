@@ -48,26 +48,26 @@ export const appRouter = [
     component: Main,
     children: [
       {
-        path: 'table',
+        path: 'table-one',
         icon: 'logo-googleplus',
-        title: 'elements-table',
-        name: 'elementsTable',
-        component: () => import('@/views/element-table/index'),
+        title: 'table-one',
+        name: 'tableOne',
+        component: () => import('@/views/element-table/table-one'),
         children: []
       },
       {
-        path: 'table-another',
+        path: 'table-two',
         icon: 'logo-googleplus',
-        title: 'elements-table-another',
-        name: 'elementsTableAnother',
-        component: () => import('@/views/element-table/element-table'),
+        title: 'table-two',
+        name: 'tableTwo',
+        component: () => import('@/views/element-table/table-two'),
         children: []
       },
       {
         path: 'table-three',
         icon: 'logo-googleplus',
-        title: 'elements-table-three',
-        name: 'elementsTableThree',
+        title: 'table-three',
+        name: 'tableThree',
         component: () => import('@/views/element-table/table-three'),
         children: []
       }
