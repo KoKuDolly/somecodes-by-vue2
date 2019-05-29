@@ -63,16 +63,23 @@ function generateObj (data) {
     let arr = []
     Object.keys(v).forEach(key => {
       if (key === 'offResultJson') {
-        arr[0] = v[key]
-        arr[0] = Object.assign({name: '线下'}, arr[0], {id: 0})
+        arr[1] = v[key]
+        arr[1] = Object.assign({name: '线下'}, arr[1])
+        let keys = Object.keys(v[key])
+        let keysObj = {}
+        keys.forEach((v, i) => {
+          keysObj[v] = v
+        })
+        keysObj = Object.assign({name: '变量英文名'}, keysObj)
+        arr[0] = keysObj
       }
       if (key === 'onResultJson') {
-        arr[1] = v[key]
-        arr[1] = Object.assign({name: '线上'}, arr[1], {id: 1})
+        arr[2] = v[key]
+        arr[2] = Object.assign({name: '线上'}, arr[2])
       }
       if (key === 'uniformityResultJson') {
-        arr[2] = v[key]
-        arr[2] = Object.assign({name: '一致性对比'}, arr[2], {id: 2})
+        arr[3] = v[key]
+        arr[3] = Object.assign({name: '一致性对比'}, arr[3])
       }
     })
     // console.log(arr)

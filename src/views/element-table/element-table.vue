@@ -152,6 +152,7 @@ export default {
       const variableArr = generateArr({data: data.data.records[0]})
       // this.variableTableData = generateObj(data.data.records, variableArr)
       this.tableData = generateObj(data.data.records, variableArr)
+      // console.log(this.tableData)
     }
   }
 }
