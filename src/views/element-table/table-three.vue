@@ -104,11 +104,7 @@ export default {
       columns: [],
       tableData: [],
       variableColumns: [],
-      variableTableData: [],
-      expandRowKeys: [],
-      getRowKeys (row) {
-        return row.id
-      }
+      variableTableData: []
     }
   },
   methods: {
