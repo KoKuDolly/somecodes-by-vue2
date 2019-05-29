@@ -48,13 +48,13 @@ import { data, map } from './data/anotherData'
 
 function generateArr ({data = {}}) {
   let arr = []
-  Object.keys(data).some(v => {
+  Object.keys(data).forEach(v => {
     let value = data[v]
-    if (value instanceof Object) {
+    if (v === 'offResultJson' || v === 'onResultJson' || v === 'uniformityResultJson') {
       arr = Object.keys(value)
     }
   })
-  return arr.sort()
+  return arr.sort().filter(v => v !== 'elm' && v !== 'isRootInsert')
 }
 
 function generateObj (data) {
@@ -115,7 +115,6 @@ export default {
     },
     handleColumns () {
       const variableArr = generateArr({data: data.data.records[0]})
-
       let obj = {}
       variableArr.forEach((_key, i) => {
         obj[_key] = {
@@ -147,7 +146,8 @@ export default {
         })
       }
 
-      this.columns = generateColumns(map)
+      this.columns = generateColumns(map).filter(v => v.key !== 'offResultJson' && v.key !== 'onResultJson' && v.key !== 'uniformityResultJson')
+      console.log(this.columns)
       this.variableColumns = [{
         key: 'name',
         label: '类型'
