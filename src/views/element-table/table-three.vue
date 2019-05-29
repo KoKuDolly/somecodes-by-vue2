@@ -82,7 +82,6 @@ function generateObj (data) {
         arr[3] = Object.assign({name: '一致性对比'}, arr[3])
       }
     })
-    // console.log(arr)
     result.push(arr)
     v.sub = arr
   })
@@ -147,7 +146,6 @@ export default {
       }
 
       this.columns = generateColumns(map).filter(v => v.key !== 'offResultJson' && v.key !== 'onResultJson' && v.key !== 'uniformityResultJson')
-      console.log(this.columns)
       this.variableColumns = [{
         key: 'name',
         label: '类型'
@@ -158,7 +156,6 @@ export default {
       this.tableData = data.data.records
     },
     toggleRowExpansion (row, expandedRows) {
-      console.log(row, expandedRows)
       this.variableTableData = row.sub
     }
   }
