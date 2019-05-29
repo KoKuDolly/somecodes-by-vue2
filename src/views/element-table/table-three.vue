@@ -4,8 +4,8 @@
     <div class="element-body">
       <Table
         :data="tableData"
-        row-key="id"
         @expand-change="toggleRowExpansion"
+        ref="table"
       >
         <TableColumn
           type="expand"
@@ -104,7 +104,11 @@ export default {
       columns: [],
       tableData: [],
       variableColumns: [],
-      variableTableData: []
+      variableTableData: [],
+      expandRowKeys: [],
+      getRowKeys (row) {
+        return row.id
+      }
     }
   },
   methods: {
@@ -156,6 +160,13 @@ export default {
       this.tableData = data.data.records
     },
     toggleRowExpansion (row, expandedRows) {
+      if (expandedRows.length > 1) {
+        this.tableData.forEach(v => {
+          if (v.id !== row.id) {
+            this.$refs.table.toggleRowExpansion(v, false)
+          }
+        })
+      }
       this.variableTableData = row.sub
     }
   }
