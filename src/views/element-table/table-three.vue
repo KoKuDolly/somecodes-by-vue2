@@ -113,8 +113,10 @@ export default {
       this.renderTable()
     },
     handleColumns () {
-      const variableArr = generateArr({data: data.data.records[0]})
+      let variableArr = generateArr({data: data.data.records[0]})
+      variableArr.push(...variableArr.splice(variableArr.findIndex(v => v === 'point'), 1))
       let obj = {}
+
       variableArr.forEach((_key, i) => {
         obj[_key] = {
           cnName: '变量' + (i + 1),
@@ -154,7 +156,7 @@ export default {
     renderTable () {
       generateObj(data.data.records)
       this.tableData = data.data.records
-      console.log(this.tableData)
+      // console.log(this.tableData)
     },
     toggleRowExpansion (row, expandedRows) {
       if (expandedRows.length > 1) {
