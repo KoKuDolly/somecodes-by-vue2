@@ -44,7 +44,7 @@
 </template>
 <script>
 import { Table, TableColumn, Form, FormItem } from 'element-ui'
-import { data, map } from './data/anotherData'
+import { map } from './data/anotherData'
 
 function generateArr ({data = {}}) {
   let arr = []
@@ -88,6 +88,18 @@ function generateObj (data) {
   return result
 }
 
+function rawToResult ({data = {}}) {
+  let result = JSON.parse(JSON.stringify(data))
+  result.forEach(v => {
+    Object.keys(v).forEach((iv, ii, ia) => {
+      if (iv === 'offResultJson' || iv === 'onResultJson' || iv === 'uniformityResultJson') {
+        v[iv] = JSON.parse(v[iv])
+      }
+    })
+  })
+  return result
+}
+
 export default {
   name: 'element-table',
   components: {
@@ -97,10 +109,14 @@ export default {
     FormItem
   },
   mounted () {
-    this.init()
+    import('./data/trueData.json').then((module) => {
+      this.sourceData = rawToResult({data: module.data.records})
+      this.init()
+    })
   },
   data () {
     return {
+      sourceData: null,
       columns: [],
       tableData: [],
       variableColumns: [],
@@ -113,7 +129,7 @@ export default {
       this.renderTable()
     },
     handleColumns () {
-      let variableArr = generateArr({data: data.data.records[0]})
+      let variableArr = generateArr({data: this.sourceData[0]})
       variableArr.push(...variableArr.splice(variableArr.findIndex(v => v === 'point'), 1))
       let obj = {}
 
@@ -154,8 +170,8 @@ export default {
       }].concat(generateColumns(obj))
     },
     renderTable () {
-      generateObj(data.data.records)
-      this.tableData = data.data.records
+      generateObj(this.sourceData)
+      this.tableData = this.sourceData
       // console.log(this.tableData)
     },
     toggleRowExpansion (row, expandedRows) {
