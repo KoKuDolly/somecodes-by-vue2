@@ -13,12 +13,65 @@ export default {
   props: {},
   computed: {},
   watch: {},
-  mounted () {},
+  mounted () {
+    this.bfs()
+  },
   data () {
     return {}
   },
   methods: {
+    bfs () {
+      let graph = {
+        'A': ['B', 'C'],
+        'B': ['A', 'C', 'D'],
+        'C': ['A', 'D', 'E'],
+        'D': ['B', 'C', 'E'],
+        'E': ['C', 'D', 'F'],
+        'F': ['E']
+      }
 
+      function bfs(graph, startPoint) {
+        let queue = []
+        let result = []
+
+        queue.push(startPoint)
+        result.push(startPoint)
+
+        while (queue.length > 0) {
+          let point = queue.shift()
+          let nodes = graph[point]
+          for (let node of nodes) {
+            if (result.includes(node)) continue
+            result.push(node)
+            queue.push(node)
+          }
+        }
+        return result
+      }
+
+      function dfs(graph, startPoint) {
+        let stack = []
+        let result = []
+
+        stack.push(startPoint)
+        result.push(startPoint)
+
+        while (stack.length > 0) {
+          let point = stack.pop()
+          let nodes = graph[point]
+          for (let node of nodes) {
+            if (result.includes(node)) continue
+            result.push(node)
+            stack.push(node)
+          }
+        }
+        return result
+      }
+
+      let resultBfs = bfs(graph, 'A')
+      let resultDfs = dfs(graph, 'A')
+      console.log(resultBfs, resultDfs)
+    }
   }
 }
 </script>
