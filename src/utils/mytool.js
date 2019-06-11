@@ -1,3 +1,4 @@
+'use strict'
 // 1.判断对象的数据类型
 // 不推荐将这个函数用来检测可能会产生包装类型的基本数据类型上,因为 call 会将第一个参数进行装箱操作
 const isType = type => target => `[object ${type}]` === Object.prototype.toString.call(target)
@@ -223,3 +224,308 @@ const memory = function (fn) {
 const fibonaccil2 = memory(fibonaccil)
 
 // 14. 实现函数 bind 方法
+
+const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+
+const selfBind = function(bindTarget, ...args1) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Bind must be called on a function')
+  }
+
+  let func = this
+  let boundFunc = function(...args2) {
+    let args = [...args1, ...args2]
+    if (new.target) {
+      let res = func.apply(this, args)
+      if (isComplexDataType(res)) return res
+      return this
+    } else {
+      func.apply(bindTarget, args)
+    }
+  }
+
+  this.prototype && (boundFunc.prototype = Object.create(this.prototype))
+
+  let desc = Object.getOwnPropertyDescriptors(func)
+  Object.defineProperties(boundFunc, {
+    length: desc.length,
+    name: Object.assign(desc.name, {
+      value: `bound${desc.name.value}`
+    })
+  })
+  return boundFunc
+}
+
+// 15. 实现函数 call 方法
+
+const selfCall = function(context, ...args) {
+  let func = this
+  context || (context = window)
+
+  if (typeof func !== 'function') throw new TypeError('this is not function')
+  let caller = Symbol('caller')
+  context[caller] = func
+  let res = context[caller](...args)
+  delete context[caller]
+  return res
+}
+
+// 16. 简易的 CO 模块
+
+function run (generatorFunc) {
+  let it = generatorFunc()
+  let result = it.next()
+
+  return new Promise((resolve, reject) => {
+    const next = function(result) {
+      if (result.done) {
+        resolve(result.value)
+      }
+      result.value = Promise.resolve(result.value)
+      result.value
+        .then(res => {
+          let result = it.next(res)
+          next(result)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    }
+    next(result)
+  })
+}
+
+// 17. 函数防抖
+
+const debounce = (
+  func,
+  time = 17,
+  options = {
+    leading: true,
+    trailing: true,
+    context: null
+  }
+) => {
+  let timer
+  const _debounce = function(...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    if (options.leading && !timer) {
+      timer = setTimeout(null, time)
+      func.apply(options.context, args)
+    } else if (options.trailing) {
+      timer = setTimeout(() => {
+        func.apply(options.context, args)
+        timer = null
+      }, time)
+    }
+  }
+
+  _debounce.cancel = function() {
+    clearTimeout(timer)
+    timer = null
+  }
+  return _debounce
+}
+
+// 18. 函数节流
+
+const throttle = (
+  func,
+  time = 17,
+  options = {
+    leading: true,
+    trailing: false,
+    context: null
+  }
+) => {
+  let previous = new Date(0).getTime()
+  let timer
+  const _throttle = function(...args) {
+    let now = new Date().getTime()
+
+    if (!options.leading) {
+      if (timer) return
+      timer = setTimeout(() => {
+        timer = null
+        func.apply(options.context, args)
+      }, time)
+    } else if (now - previous > time) {
+      func.apply(options.context, args)
+      previous = now
+    } else if (options.trailing) {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        func.apply(options.context, args)
+      }, time)
+    }
+  }
+
+  _throttle.cancel = () => {
+    previous = 0
+    clearTimeout(timer)
+    timer = null
+  }
+  return _throttle
+}
+
+// 19. 图片懒加载
+
+let imgList = [...document.querySelectorAll('img')]
+let num = imgList.length
+
+let lazyLoad = (function() {
+  let count = 0
+  return function() {
+    let deleteIndexList = []
+    imgList.forEach((img, index) => {
+      let rect = img.getBoundingClientRect()
+      if (rect.top < window.innerHeight) {
+        img.src = img.dataset.src
+        deleteIndexList.push(index)
+        count++
+        if (count === num) {
+          document.removeEventListener('scroll', lazyLoad)
+        }
+      }
+    })
+    imgList = imgList.filter((_, index) => !deleteIndexList.includes(index))
+  }
+})()
+
+let lazyLoad1 = function() {
+  let observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > 0) {
+        entry.target.src = entry.target.dataset.src
+        observer.unobserve(entry.target)
+      }
+    })
+  })
+  imgList.forEach(img => {
+    observer.observe(img)
+  })
+}
+
+// 20. new 关键字
+
+const selfNew = function(fn, ...rest) {
+  let instance = Object.create(fn.prototype)
+  let res = fn.apply(instance, rest)
+  return isComplexDataType(res) ? res : instance
+}
+
+// 21. 实现 Object.assign
+
+const selfAssign = function(target, ...source) {
+  if (target === null) throw new TypeError('Cannot convert undefined or null to object')
+  return source.reduce((acc, cur) => {
+    isComplexDataType(acc) || (acc = new Object(acc))
+    if (cur === null) return acc
+    ;[...Object.keys(cur), ...Object.getOwnPropertySymbols(cur)].forEach(key => {
+      acc[key] = cur[key]
+    })
+    return acc
+  }, target)
+}
+
+// 22. instanceof
+
+const seltInstanceof = function(left, right) {
+  let proto = Object.getPrototypeOf(left)
+  while (true) {
+    if (proto === null) return false
+    if (proto === right.prototype) return true
+    proto = Object.getPrototypeOf(proto)
+  }
+}
+
+// 23. 私有变量的实现
+
+const proxy = function(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      if (key.startsWith('_')) {
+        throw new Error('private key')
+      }
+      return Reflect.get(target, key)
+    },
+    ownKeys(target) {
+      return Reflect.ownKeys(target).filter(key => !key.startsWith('_'))
+    }
+  })
+}
+
+const Person = (function() {
+  const _name = Symbol('name')
+
+  class Person {
+    constructor(name) {
+      this[_name] = name
+    }
+
+    getName() {
+      return this[_name]
+    }
+  }
+  return Person
+})()
+
+class Person {
+  constructor(name) {
+    let _name = name
+    this.getName = function() {
+      return _name
+    }
+  }
+}
+
+const Person = (function() {
+  let wp = new WeakMap()
+
+  class Person {
+    constructor(name) {
+      wp.set(this, { name })
+    }
+
+    getName() {
+      return wp.get(this).name
+    }
+  }
+  return Person
+})()
+
+// 24. 洗牌算法
+
+function shuffle(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let randomIndex = i + Math.floor(Math.random() * (arr.length - 1))
+    ;[arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]]
+  }
+  return arr
+}
+
+function shuffle2(arr) {
+  let _arr = []
+  while (arr.length) {
+    let randomIndex = Math.floor(Math.random() * arr.length)
+    _arr.push(arr.splice(randomIndex, 1)[0])
+  }
+  return _arr
+}
+
+// 25. 单例模式
+
+function proxy(func) {
+  let instance
+  let handler = {
+    constructor(target, args) {
+      if (!instance) {
+        instance = Reflect.construct(func, args)
+      }
+      return instance
+    }
+  }
+  return new Proxy(func, handler)
+}
