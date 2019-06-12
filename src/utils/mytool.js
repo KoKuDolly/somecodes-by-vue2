@@ -529,3 +529,74 @@ function proxy(func) {
   }
   return new Proxy(func, handler)
 }
+
+// 26. promisify
+
+const fs = require('fs')
+
+function promisify(asyncFunc) {
+  return function(...args) {
+    return new Promise((resolve, reject) => {
+      args.push(function callback(err, ...values) {
+        if (err) return reject(err)
+        return resolve(...values)
+      })
+      asyncFunc.call(this, ...args)
+    })
+  }
+}
+
+const fsp = new Proxy(fs, {
+  get(target, key) {
+    return promisify(target[key])
+  }
+})
+
+// await fsp.readFile('./promisify.js', 'utf-8')
+// await fsp.writeFile('./promisify.js', data)
+
+// 27. 优雅的处理 async/await
+
+async function errorCaptured (asyncFunc) {
+  try {
+    let res = await asyncFunc()
+    return [null, res]
+  } catch (e) {
+    return [e, null]
+  }
+}
+
+// 28. 发布订阅 EventEmitter
+
+class EventEmitter {
+  constructor() {
+    this.subs = {}
+  }
+
+  on(event, cb) {
+    (this.subs[event] || (this.subs[event] = [])).push(cb)
+  }
+
+  trigger(event, ...args) {
+    this.subs[event] &&
+      this.subs[event].forEach(cb => {
+        cb(...args)
+      })
+  }
+
+  once(event, onceCb) {
+    const cb = (...args) => {
+      onceCb(...args)
+      this.off(event, onceCb)
+    }
+    this.on(event, cb)
+  }
+
+  off(event, offCb) {
+    if (this.subs[event]) {
+      let index = this.subs[event].findIndex(cb => cb === offCb)
+      this.subs[event].splice(index, 1)
+      if (!this.subs[event].length) delete this.subs[event]
+    }
+  }
+}
