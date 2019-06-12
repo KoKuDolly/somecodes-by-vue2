@@ -1,13 +1,13 @@
 'use strict'
 // 1.判断对象的数据类型
 // 不推荐将这个函数用来检测可能会产生包装类型的基本数据类型上,因为 call 会将第一个参数进行装箱操作
-const isType = type => target => `[object ${type}]` === Object.prototype.toString.call(target)
+export const isType = type => target => `[object ${type}]` === Object.prototype.toString.call(target)
 
-const isArray = isType('Array')
+export const isArray = isType('Array')
 
 // 2. ES5 实现数组 map 方法
 
-const selfMap = function(fn, context) {
+export const selfMap = function(fn, context) {
   let arr = Array.prototype.slice.call(this)
   let mappedArr = []
   for (let i = 0; i < arr.length; i++) {
@@ -19,7 +19,7 @@ const selfMap = function(fn, context) {
 
 // 3. 使用 reduce 实现数组 map 方法
 
-const selfMap2 = function(fn, context) {
+export const selfMap2 = function(fn, context) {
   let arr = Array.prototype.slice.call(this)
   return arr.reduce((pre, cur, index) => {
     return [...pre, fn.call(context, cur, index, this)]
@@ -28,7 +28,7 @@ const selfMap2 = function(fn, context) {
 
 // 4. ES5 实现数组 filter 方法
 
-const selfFilter = function(fn, context) {
+export const selfFilter = function(fn, context) {
   let arr = Array.prototype.slice.call(this)
   let filteredArr = []
   for (let i = 0; i < arr.length; i++) {
@@ -40,7 +40,7 @@ const selfFilter = function(fn, context) {
 
 // 5. 使用 reduce 实现数组 filter 方法
 
-const selfFilter2 = function(fn, context) {
+export const selfFilter2 = function(fn, context) {
   return this.reduce((pre, cur, index) => {
     return fn.call(context, cur, index, this) ? [...pre, cur] : [...pre]
   }, [])
@@ -48,7 +48,7 @@ const selfFilter2 = function(fn, context) {
 
 // 6. ES5 实现数组的 some 方法
 
-const selfSome = function(fn, context) {
+export const selfSome = function(fn, context) {
   let arr = Array.prototype.slice.call(this)
   if (!arr.length) return false
   let flag = false
@@ -65,7 +65,7 @@ const selfSome = function(fn, context) {
 
 // 7. ES5 实现数组的 reduce 方法
 
-const findRealElementIndex = function(arr, initIndex) {
+export const findRealElementIndex = function(arr, initIndex) {
   let index
   for (let i = initIndex || 0; i < arr.length; i++) {
     if (!arr.hasOwnProperty(i)) continue
@@ -75,7 +75,7 @@ const findRealElementIndex = function(arr, initIndex) {
   return index
 }
 
-const selfReduce = function(fn, initialValue) {
+export const selfReduce = function(fn, initialValue) {
   let arr = Array.prototype.slice.call(this)
   let res
 
@@ -98,7 +98,7 @@ const selfReduce = function(fn, initialValue) {
 
 // 8. 使用 reduce 实现数组的 flat 方法
 
-const selfFlat = function(depth = 1) {
+export const selfFlat = function(depth = 1) {
   let arr = Array.prototype.slice.call(this)
   if (depth === 0) return arr
   return arr.reduce((pre, cur) => {
@@ -112,7 +112,7 @@ const selfFlat = function(depth = 1) {
 
 // 9. 实现 ES6 的 class 语法
 
-function inherit (subType, superType) {
+export function inherit (subType, superType) {
   subType.prototype = Object.create(superType.prototype, {
     constructor: {
       enumerable: false,
@@ -135,7 +135,7 @@ ES6 的 class 内部是基于寄生组合式继承，它是目前最理想的继
 
 // 10. 函数柯里化
 
-function curry(fn) {
+export function curry(fn) {
   if (fn.length <= 1) return fn
   const generator = (...args) => {
     if (fn.length === args.length) {
@@ -158,14 +158,14 @@ add(5, 6, 7, 8)
 
 // 11. 函数柯里化（支持占位符）
 
-const curry = (fn, placeholder = '_') => {
-  curry.placeholder = placeholder
+export const curry2 = (fn, placeholder = '_') => {
+  curry2.placeholder = placeholder
   if (fn.length <= 1) return fn
   let argsList = []
   const generator = (...args) => {
     let currentPlaceholderIndex = -1
     args.forEach(arg => {
-      let placeholderIndex = argsList.findIndex(arg => arg === curry.placeholder)
+      let placeholderIndex = argsList.findIndex(arg => arg === curry2.placeholder)
       if (placeholderIndex < 0) {
         currentPlaceholderIndex = argsList.push(arg) - 1
       } else if (placeholderIndex !== currentPlaceholderIndex) {
@@ -174,7 +174,7 @@ const curry = (fn, placeholder = '_') => {
         argsList.push(arg)
       }
     })
-    let realArgList = argsList.filter(arg => arg !== curry.placeholder)
+    let realArgList = argsList.filter(arg => arg !== curry2.placeholder)
     if (realArgList.length === fn.length) {
       return fn(...argsList)
     } else if (realArgList.length > fn.length) {
@@ -188,7 +188,7 @@ const curry = (fn, placeholder = '_') => {
 
 // 12. 偏函数
 
-const partialFunc = (func, ...args) => {
+export const partialFunc = (func, ...args) => {
   let placeholderNum = 0
   return (...args2) => {
     args2.forEach(arg => {
@@ -206,7 +206,7 @@ const partialFunc = (func, ...args) => {
 
 // 13. 斐波那契数列及其优化
 
-const fibonaccil = function (n) {
+export const fibonaccil = function (n) {
   if (n < 1) throw new Error('参数错误')
   if (n === 1 || n === 2) return 1
   return fibonaccil(n - 1) + fibonaccil(n - 2)
@@ -214,20 +214,20 @@ const fibonaccil = function (n) {
 
 // 函数记忆
 
-const memory = function (fn) {
+export const memory = function (fn) {
   let obj = {}
   return function (n) {
     if (!obj[n]) obj[n] = fn(n)
     return obj[n]
   }
 }
-const fibonaccil2 = memory(fibonaccil)
+export const fibonaccil2 = memory(fibonaccil)
 
 // 14. 实现函数 bind 方法
 
-const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+export const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && obj !== null
 
-const selfBind = function(bindTarget, ...args1) {
+export const selfBind = function(bindTarget, ...args1) {
   if (typeof this !== 'function') {
     throw new TypeError('Bind must be called on a function')
   }
@@ -258,7 +258,7 @@ const selfBind = function(bindTarget, ...args1) {
 
 // 15. 实现函数 call 方法
 
-const selfCall = function(context, ...args) {
+export const selfCall = function(context, ...args) {
   let func = this
   context || (context = window)
 
@@ -272,7 +272,7 @@ const selfCall = function(context, ...args) {
 
 // 16. 简易的 CO 模块
 
-function run (generatorFunc) {
+export function run (generatorFunc) {
   let it = generatorFunc()
   let result = it.next()
 
@@ -297,7 +297,7 @@ function run (generatorFunc) {
 
 // 17. 函数防抖
 
-const debounce = (
+export const debounce = (
   func,
   time = 17,
   options = {
@@ -331,7 +331,7 @@ const debounce = (
 
 // 18. 函数节流
 
-const throttle = (
+export const throttle = (
   func,
   time = 17,
   options = {
@@ -375,7 +375,7 @@ const throttle = (
 let imgList = [...document.querySelectorAll('img')]
 let num = imgList.length
 
-let lazyLoad = (function() {
+export let lazyLoad = (function() {
   let count = 0
   return function() {
     let deleteIndexList = []
@@ -394,7 +394,7 @@ let lazyLoad = (function() {
   }
 })()
 
-let lazyLoad1 = function() {
+export let lazyLoad1 = function() {
   let observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.intersectionRatio > 0) {
@@ -410,7 +410,7 @@ let lazyLoad1 = function() {
 
 // 20. new 关键字
 
-const selfNew = function(fn, ...rest) {
+export const selfNew = function(fn, ...rest) {
   let instance = Object.create(fn.prototype)
   let res = fn.apply(instance, rest)
   return isComplexDataType(res) ? res : instance
@@ -418,7 +418,7 @@ const selfNew = function(fn, ...rest) {
 
 // 21. 实现 Object.assign
 
-const selfAssign = function(target, ...source) {
+export const selfAssign = function(target, ...source) {
   if (target === null) throw new TypeError('Cannot convert undefined or null to object')
   return source.reduce((acc, cur) => {
     isComplexDataType(acc) || (acc = new Object(acc))
@@ -432,7 +432,7 @@ const selfAssign = function(target, ...source) {
 
 // 22. instanceof
 
-const seltInstanceof = function(left, right) {
+export const seltInstanceof = function(left, right) {
   let proto = Object.getPrototypeOf(left)
   while (true) {
     if (proto === null) return false
@@ -443,7 +443,7 @@ const seltInstanceof = function(left, right) {
 
 // 23. 私有变量的实现
 
-const proxy = function(obj) {
+export const proxy = function(obj) {
   return new Proxy(obj, {
     get(target, key) {
       if (key.startsWith('_')) {
@@ -457,7 +457,7 @@ const proxy = function(obj) {
   })
 }
 
-const Person = (function() {
+export const Person = (function() {
   const _name = Symbol('name')
 
   class Person {
@@ -472,7 +472,7 @@ const Person = (function() {
   return Person
 })()
 
-class Person {
+export class Person2 {
   constructor(name) {
     let _name = name
     this.getName = function() {
@@ -481,7 +481,7 @@ class Person {
   }
 }
 
-const Person = (function() {
+export const Person3 = (function() {
   let wp = new WeakMap()
 
   class Person {
@@ -498,7 +498,7 @@ const Person = (function() {
 
 // 24. 洗牌算法
 
-function shuffle(arr) {
+export function shuffle(arr) {
   for (let i = 0; i < arr.length; i++) {
     let randomIndex = i + Math.floor(Math.random() * (arr.length - 1))
     ;[arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]]
@@ -506,7 +506,7 @@ function shuffle(arr) {
   return arr
 }
 
-function shuffle2(arr) {
+export function shuffle2(arr) {
   let _arr = []
   while (arr.length) {
     let randomIndex = Math.floor(Math.random() * arr.length)
@@ -517,7 +517,7 @@ function shuffle2(arr) {
 
 // 25. 单例模式
 
-function proxy(func) {
+export function proxy2(func) {
   let instance
   let handler = {
     constructor(target, args) {
@@ -534,7 +534,7 @@ function proxy(func) {
 
 const fs = require('fs')
 
-function promisify(asyncFunc) {
+export function promisify(asyncFunc) {
   return function(...args) {
     return new Promise((resolve, reject) => {
       args.push(function callback(err, ...values) {
@@ -546,7 +546,7 @@ function promisify(asyncFunc) {
   }
 }
 
-const fsp = new Proxy(fs, {
+export const fsp = new Proxy(fs, {
   get(target, key) {
     return promisify(target[key])
   }
@@ -557,7 +557,7 @@ const fsp = new Proxy(fs, {
 
 // 27. 优雅的处理 async/await
 
-async function errorCaptured (asyncFunc) {
+export async function errorCaptured (asyncFunc) {
   try {
     let res = await asyncFunc()
     return [null, res]
@@ -568,7 +568,7 @@ async function errorCaptured (asyncFunc) {
 
 // 28. 发布订阅 EventEmitter
 
-class EventEmitter {
+export class EventEmitter {
   constructor() {
     this.subs = {}
   }
