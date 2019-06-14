@@ -41,6 +41,16 @@ export const appRouter = [
     ]
   },
   {
+    path: '/Mock',
+    name: 'Mock',
+    title: 'Mock',
+    icon: 'logo-buffer',
+    component: Main,
+    children: [
+      {path: 'mock-index', icon: 'logo-googleplus', title: 'Mock', name: 'mockIndex', component: () => import('@/views/Mock/'), children: []}
+    ]
+  },
+  {
     path: '/element-components',
     name: 'element-components',
     title: 'elements',
