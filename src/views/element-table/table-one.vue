@@ -27,6 +27,7 @@
 <script>
 import { Table, TableColumn } from 'element-ui'
 import { data, map } from './data/data'
+import { sourceData } from './data/auml.js'
 export default {
   name: 'element-table',
   components: {
@@ -35,6 +36,8 @@ export default {
   },
   mounted () {
     this.init()
+    // console.log(sourceData)
+    this.transAumlData(sourceData)
   },
   data () {
     return {
@@ -43,6 +46,28 @@ export default {
     }
   },
   methods: {
+    transAumlData (source) {
+      const data = source.data
+      console.log(data)
+      function isObject(obj, options) {
+        const result = Object.keys(obj).map(v => {
+          const value = obj[v]
+          if (typeof value === 'object') {
+            if (v === 'sampleAndAttr') {
+              // isObject(value)
+              return {...value}
+            } else {
+              isObject(value)
+              return { [v]: obj[v] }
+            }
+          }
+        })
+        return result
+      }
+
+      const result = isObject(data)
+      console.log(result)
+    },
     init () {
       this.handleColumns()
       this.renderTable()
@@ -137,7 +162,7 @@ export default {
       generateMap(data.data.records[0], map)
 
       this.columns = generateColumns(map)
-      console.log(this.columns, map)
+      // console.log(this.columns, map)
     }
   }
 }

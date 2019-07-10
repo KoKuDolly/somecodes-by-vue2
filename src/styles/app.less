@@ -57,3 +57,15 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+/* less xuexi code*/
+
+#library() {
+  .rules() {
+    background: green;
+  }
+}
+.box {
+  @alias: #library.rules();
+  @alias();   // ERROR: Could not evaluate variable call @alias
+}
