@@ -31,11 +31,13 @@
           <Input v-model="formData.str"/>
         </FormItem>
       </Form>
+      <button @click="handleClick">dianji</button>
     </div>
   </div>
 </template>
 <script>
 // import moment from 'moment'
+import axios from 'axios'
 export default {
   name: '',
   components: {},
@@ -78,6 +80,13 @@ export default {
     }
   },
   methods: {
+    handleClick () {
+      // console.log('click')
+      const quitFn = function quitRTC() {
+        return axios.post('/api/company/list')
+      }
+      this.isWindowReload.addWindowReload({quit: quitFn})
+    },
     dateChange (v) {
       console.log(v)
       console.log(v.target.value)
