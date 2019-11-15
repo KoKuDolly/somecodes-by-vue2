@@ -6,6 +6,10 @@ import App from './App'
 import {router} from './router'
 import store from './store/'
 import '@/styles/index.less'
+import { isWindowReload } from '@/utils/windows.js'
+
+Vue.prototype.isWindowReload = isWindowReload
+
 Vue.config.productionTip = false
 Vue.use(iView)
 
