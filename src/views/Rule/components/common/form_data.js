@@ -3,7 +3,8 @@ export const dataSource = [
   {value: '1', label: '海纳'},
   {value: '2', label: '整合'},
   {value: '3', label: 'ALL'},
-  {value: '4', label: '特征工程'}
+  {value: '4', label: '特征工程'},
+  {value: '5', label: '特征工程'}
 ]
 
 export const dataProductVersion = [
