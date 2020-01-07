@@ -80,6 +80,14 @@ export const appRouter = [
         name: 'tableThree',
         component: () => import('@/views/element-table/table-three'),
         children: []
+      },
+      {
+        path: 'table-cascader',
+        icon: 'logo-googleplus',
+        title: 'table-cascader',
+        name: 'tableCascader',
+        component: () => import('@/views/element-table/table-cascader'),
+        children: []
       }
     ]
   },
