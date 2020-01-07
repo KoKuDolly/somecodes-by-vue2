@@ -26,6 +26,12 @@ export const otherRouter = {
   ]
 }
 
+export const fullscreen = {
+  path: '/fullscreenCarousel',
+  name: 'fullscreenCarousel',
+  component: () => import('@/views/main-components/full-screen/index.vue')
+}
+
 export const appRouter = [
   {
     path: '/AntV',
@@ -104,9 +110,9 @@ export const appRouter = [
         title: 'multipleView_more',
         name: 'multipleView_more',
         components: {
-          default: () => import('@/views/multipleView/components/a.vue'),
-          b: () => import('@/views/multipleView/components/a.vue'),
-          c: () => import('@/views/multipleView/components/c.vue')
+          default: () => import('@/views/multipleView/components/a.vue')
+          // b: () => import('@/views/multipleView/components/a.vue'),
+          // c: () => import('@/views/multipleView/components/c.vue')
         },
         children: []
       }
@@ -150,5 +156,6 @@ export const routers = [
   loginRouter,
   otherRouter,
   ...appRouter,
-  locking
+  locking,
+  fullscreen
 ]
