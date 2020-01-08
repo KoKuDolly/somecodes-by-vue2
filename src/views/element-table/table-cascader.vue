@@ -3,8 +3,8 @@
  * @version:
  * @Author: jiajun.qin
  * @Date: 2020-01-07 20:32:32
- * @LastEditors  : jiajun.qin
- * @LastEditTime : 2020-01-08 18:53:02
+ * @LastEditors  : Please set LastEditors
+ * @LastEditTime : 2020-01-09 00:01:05
  -->
 <template>
   <div class="cascader-container">
@@ -207,7 +207,13 @@ export default {
           enName: 'enName'
         })
       }
-      this.lbTableData = data
+      // console.log(this.save.rbAllData, this.save.ltIndex)
+      this.lbTableData = data.filter(v => {
+        if (Array.isArray(this.save.rbAllData[this.save.ltIndex])) {
+          return !this.save.rbAllData[this.save.ltIndex].map(v => v.id).includes(v.id)
+        }
+        return true
+      })
     },
     // 2-2 表格渲染
     renderrbTable() {},
@@ -215,10 +221,10 @@ export default {
     // 1-1 表格单选
     handleltRadioChange(index, row) {
       console.log(index, row)
-      const param = {...row}
-      this.renderlbTable(param)
       this.save.ltSelected = row
       this.save.ltIndex = index
+      const param = {...row}
+      this.renderlbTable(param)
     },
     // 1-2 表格单选
     handlertRadioChange(index, row) {
@@ -272,7 +278,33 @@ export default {
       this.rbTableData = this.save.rbAllData[this.save.ltIndex].sort((a, b) => a.index - b.index)
     },
     // 删除
-    handleDelete() {}
+    handleDelete() {
+      // 2-2 表格未选择，则删除无效
+      if (this.save.rbSelected.length === 0) {
+        return false
+      }
+      // 2-2
+      this.rbTableData = this.rbTableData.filter(v => {
+        return !this.save.rbSelected.map(v => v.id).includes(v.id)
+      })
+      // 1-1
+      if (!this.ltTableData.map(v => v.id).includes(this.save.rtSelected.id)) {
+        this.ltTableData.push(this.save.rtSelected)
+        this.ltTableData = this.ltTableData.sort((a, b) => a.id - b.id)
+      }
+      // 1-2
+      if (this.rbTableData.length === 0) {
+        this.rtTableData = this.rtTableData.filter(v => {
+          return v.id !== this.save.rtSelected.id
+        })
+      }
+      // 2-1
+      if (Array.isArray(this.save.rbAllData[this.save.rtIndex])) {
+        this.save.rbAllData[this.save.rtIndex] = this.save.rbAllData[this.save.rtIndex].filter(v => {
+          return !this.save.rbSelected.map(v => v.id).includes(v.id)
+        })
+      }
+    }
   }
 }
 </script>
