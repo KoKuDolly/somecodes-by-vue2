@@ -1,0 +1,2 @@
+webpackJsonp([9],{"7sC7":function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",[t("keep-alive",{attrs:{include:this.cachePage}},[t("router-view")],1)],1)},staticRenderFns:[]};var a=n("VU/8")({name:"rule_index",data:function(){return{cachePage:["Rules_home"]}}},r,!1,function(e){n("bzk4")},null,null);t.default=a.exports},bzk4:function(e,t){}});
+//# sourceMappingURL=9.0d389984719c03fb2659.js.map
