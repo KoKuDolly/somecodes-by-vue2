@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: jiajun.qin
+ * @Date: 2019-11-15 18:33:05
+ * @LastEditors  : jiajun.qin
+ * @LastEditTime : 2020-01-09 11:04:20
+ */
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -51,7 +59,8 @@ module.exports = {
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
-
+    // 部署目录相对于根目录的相对路径
+    publicPath: '/vue-koku/',
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
