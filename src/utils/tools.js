@@ -373,3 +373,44 @@ export const filterParams = (param = {}, keyArr = []) => {
   })
   return newParam
 }
+
+// 随机生成密码 (至少包含一个大写字母，小写字母，数字，特殊符号)
+export default function randomPassword(length, specialSymbol = true) {
+  let len = length ? Number(length) : 0
+  // Limit length 6 - 16
+  if (len < 6 || len > 16) {
+    len = 6 + Math.floor(Math.random() * (16 - 6 + 1))
+  }
+  const passwordArray = [
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    'abcdefghijklmnopqrstuvwxyz',
+    '1234567890',
+    '!@#$%&*?'
+  ]
+  const password = []
+  let n = 0
+  const arrayLen = specialSymbol ? 4 : 3
+  for (let i = 0; i < len; i += 1) {
+    // If password length less than length - 4, all value random
+    if (password.length < len - arrayLen) {
+      // Get random passwordArray index
+      const arrayRandom = Math.floor(Math.random() * arrayLen)
+      // Get password array value
+      const passwordItem = passwordArray[arrayRandom]
+      // Get password array value random index
+      // Get random real value
+      const item = passwordItem[Math.floor(Math.random() * passwordItem.length)]
+      password.push(item)
+    } else {
+      // If password large then length - 4, lastest 4 password will push in according to the random password index
+      // Get the array values sequentially
+      const newItem = passwordArray[n]
+      const lastItem = newItem[Math.floor(Math.random() * newItem.length)]
+      // Get array splice index
+      const spliceIndex = Math.floor(Math.random() * password.length)
+      password.splice(spliceIndex, 0, lastItem)
+      n += 1
+    }
+  }
+  return password.join('')
+}
