@@ -149,6 +149,16 @@ export const appRouter = [
         ]
       }
     ]
+  },
+  {
+    path: '/vue-learn',
+    name: 'vue-learn',
+    title: 'vue-learn',
+    icon: 'logo-googleplus',
+    component: Main,
+    children: [
+      {path: 'on-emit-off', icon: 'logo-googleplus', title: 'on-emit-off', name: 'on-emit-off', component: () => import('@/views/vue-learn/on-emit-off/'), children: []}
+    ]
   }
 ]
 

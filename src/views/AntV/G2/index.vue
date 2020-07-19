@@ -38,14 +38,20 @@
 <script>
 // import moment from 'moment'
 import axios from 'axios'
+import { PDFJS as PDFJSViewer } from 'pdfjs-dist/web/pdf_viewer.js'
+import 'pdfjs-dist/web/pdf_viewer.css'
 export default {
   name: '',
   components: {},
   props: {},
   computed: {},
   watch: {},
+  created () {
+    this.initEventBus()
+  },
   mounted () {
     // console.log(moment().format('YYYY-MM-DD'))
+
   },
   data () {
     return {
@@ -80,6 +86,24 @@ export default {
     }
   },
   methods: {
+    initEventBus() {
+      let eventBus = new PDFJSViewer.EventBus()
+      eventBus.on('pagesinit', (e) => {
+        this.scale = this._pdfViewer.currentScale
+        if (this.onInit) {
+          this.onInit({})
+        }
+        if (this.onScaleChanged) {
+          this.onScaleChanged({scale: this.scale})
+        }
+      })
+      eventBus.on('scalechange', (e) => {
+        if (this.onScaleChanged) {
+          this.onScaleChanged({scale: e.scale})
+        }
+      })
+      this._eventBus = eventBus
+    },
     handleClick () {
       // console.log('click')
       const quitFn = function quitRTC() {
