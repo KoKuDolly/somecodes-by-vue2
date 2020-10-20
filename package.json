@@ -14,11 +14,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@antv/g2": "^4.0.15",
     "element-ui": "^2.8.2",
     "iview": "^3.0.0",
     "mockjs": "^1.0.1-beta3",
     "npm": "^6.9.0",
     "pdfjs-dist": "^2.4.456",
+    "viser-vue": "^2.4.8",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

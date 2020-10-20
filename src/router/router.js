@@ -159,6 +159,31 @@ export const appRouter = [
     children: [
       {path: 'on-emit-off', icon: 'logo-googleplus', title: 'on-emit-off', name: 'on-emit-off', component: () => import('@/views/vue-learn/on-emit-off/'), children: []}
     ]
+  },
+  {
+    path: '/flex-grid',
+    name: 'flex-grid',
+    title: 'flex-grid',
+    icon: 'logo-buffer',
+    component: Main,
+    children: [
+      {
+        path: 'flex',
+        icon: 'logo-googleplus',
+        title: 'flex',
+        name: 'flex',
+        component: () => import('@/views/Layout/flex'),
+        children: []
+      },
+      {
+        path: 'grid',
+        icon: 'logo-googleplus',
+        title: 'grid',
+        name: 'grid',
+        component: () => import('@/views/Layout/grid'),
+        children: []
+      }
+    ]
   }
 ]
 
